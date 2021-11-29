@@ -27,11 +27,11 @@ const validate = (values) => {
 
   return errors;
 };
-const validationSchema = Yup.object({
-  name: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email format").required("Email required"),
-  channel: Yup.string().required("Channel name required"),
-});
+// const validationSchema = Yup.object({
+//   name: Yup.string().required("Required"),
+//   email: Yup.string().email("Invalid email format").required("Email required"),
+//   channel: Yup.string().required("Channel name required"),
+// });
 
 function Form() {
   const formik = useFormik({
@@ -51,9 +51,7 @@ function Form() {
             type="text"
             id="name "
             name="name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
+            {...formik.getFieldProps("name")}
           />
           <br />
           {formik.touched.name && formik.errors.name ? (
