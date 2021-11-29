@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const initialValues = {
   name: "",
@@ -26,10 +27,17 @@ const validate = (values) => {
 
   return errors;
 };
-export default function Form() {
+const validationSchema = Yup.object({
+  name: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email format").required("Email required"),
+  channel: Yup.string().required("Channel name required"),
+});
+
+function Form() {
   const formik = useFormik({
     initialValues,
     onSubmit,
+    //validationSchema,
     validate,
   });
   // console.log("form values", formik.errors);
@@ -62,7 +70,7 @@ export default function Form() {
           value={formik.values.email}
         />
         <br />
-        {formik.errors.email ? (
+        {formik.touched.email && formik.errors.email ? (
           <div className="error">{formik.errors.email} </div>
         ) : null}
         <label htmlFor="name">Channel</label>
@@ -75,7 +83,7 @@ export default function Form() {
           value={formik.values.channel}
         />
         <br />
-        {formik.errors.channel ? (
+        {formik.touched.channel && formik.errors.channel ? (
           <div className="error">{formik.errors.channel} </div>
         ) : null}
         <button type="submit">Submit</button>
@@ -83,3 +91,4 @@ export default function Form() {
     </div>
   );
 }
+export default Form;
