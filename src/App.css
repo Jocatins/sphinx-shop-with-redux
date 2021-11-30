@@ -38,7 +38,11 @@
 }
 .form-control {
   margin-bottom: 20px;
+  width: 80%;
 }
 .error {
   color: red;
+}
+input {
+  width: 20%;
 }
