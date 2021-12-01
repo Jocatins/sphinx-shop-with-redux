@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Formik,
   Form,
@@ -11,16 +11,24 @@ import * as Yup from "yup";
 import TextError from "./TextError";
 
 const initialValues = {
-  name: "",
+  name: "Jocatins",
   email: "",
   channel: "",
   address: "",
   comments: "",
 };
+const savedValues = {
+  name: "Jocatins",
+  email: "jocakhamen@gmail.com",
+  channel: "sphinx tv",
+  address: "Panorama",
+  comments: "Good to you",
+};
 const onSubmit = (values, onSubmitProps) => {
   console.log("form data", values);
   console.log("submit props", onSubmitProps);
   onSubmitProps.setSubmitting(false);
+  //onSubmitProps.resetForm()
 };
 
 const validationSchema = Yup.object({
@@ -38,11 +46,13 @@ const validateComments = (value) => {
 };
 
 function Form1() {
+  const [formValues, setFormValues] = useState(null);
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={formValues || initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize
       // validateOnChange={false}   validateOnBlur={false}
       // 4 simple validations use -----> validateOnMount
     >
@@ -62,7 +72,12 @@ function Form1() {
             </div>
             <div className="form-control">
               <label htmlFor="channel">Channel</label>
-              <Field type="text" id="channel " name="channel" />
+              <Field
+                type="text"
+                id="channel "
+                name="channel"
+                placeholder="Channel Name"
+              />
               <ErrorMessage name="channel">
                 {(errorMsg) => <div className="error">{errorMsg}</div>}
               </ErrorMessage>
@@ -96,10 +111,10 @@ function Form1() {
 
               <ErrorMessage name="comments" component={TextError} />
             </div>
-
-            {/* <button type="submit" disabled={!(formik.dirty && formik.isValid)}>
-              Submit
-            </button> */}
+            <button type="reset">Reset</button>
+            <button type="button" onClick={() => setFormValues(savedValues)}>
+              Load Saved Data
+            </button>
             <button
               type="submit"
               disabled={!formik.isValid || formik.isSubmitting}
